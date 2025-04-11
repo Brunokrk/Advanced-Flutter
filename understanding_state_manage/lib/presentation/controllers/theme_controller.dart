@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 //Change Notifier é um mixin que implementa o Listenable 
 
-class ThemeController  extends ChangeNotifier{
-  bool isDarkTheme = false;
+class ThemeController  extends ValueNotifier<bool>{
+  ThemeController() : super(false); //value notifier começa como false
 
   void toggleTheme(){
-    isDarkTheme = !isDarkTheme;
-    notifyListeners();//todo mundo que estiver escutando este changeNotifier será atualizado neste ponto
+    value =  !value;
+    //Dentro do value notifier, o atributo value já implementa o notifyListeners, não sendo necessário chamá-lo.
   }
 }
