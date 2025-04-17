@@ -4,6 +4,7 @@ import 'package:understanding_state_manage/builders/observable_state_builder.dar
 import 'package:understanding_state_manage/classes/counter_sate.dart';
 import 'package:understanding_state_manage/contracts/observable.dart';
 import 'package:understanding_state_manage/controllers/state_observable.dart';
+import 'package:understanding_state_manage/mixins/change_state_mixin.dart';
 // ctrl + K  -> ctrl + S
 
 void main() {
@@ -29,12 +30,15 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
   final counterState = CounterState();
   final observableCounter = StateObservable(0);
 
-  void callback() {
-    setState(() {});
+  @override
+  void initState() {
+    useChangeState(counterState);
+    useChangeState(observableCounter);
+    super.initState();
   }
 
   @override
@@ -47,16 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ObservableStateBuilder(
-              stateObservable: observableCounter,
-              listener: (context, state) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Valor do counter: $state"),),);
-              },
-              buildWhen: (oldState, newState) => newState % 2 == 0,
-              builder: (context, state, child) {
-                return Text("Valor do counterState: $state");
-              }),
+          Text("Valor do counterState: ${counterState.counter}"),
+          ElevatedButton(
+            onPressed: () {
+              counterState.increment();
+            },
+            child: const Text('Increment'),
+          ),
+          Text("Valor do counterState: ${observableCounter.state}"),
           ElevatedButton(
             onPressed: () {
               observableCounter.state++;
