@@ -33,11 +33,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
   final counterState = CounterState();
   final observableCounter = StateObservable(0);
+  late StateObservable<int> newMixinCoutner;
 
   @override
   void initState() {
     useChangeState(counterState);
     useChangeState(observableCounter);
+    newMixinCoutner = useStateObservable(0);
     super.initState();
   }
 
@@ -62,6 +64,13 @@ class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
           ElevatedButton(
             onPressed: () {
               observableCounter.state++;
+            },
+            child: const Text('Increment'),
+          ),
+          Text("Valor do newMixinStateObservable: ${newMixinCoutner.state}"),
+          ElevatedButton(
+            onPressed: () {
+              newMixinCoutner.state++;
             },
             child: const Text('Increment'),
           ),
