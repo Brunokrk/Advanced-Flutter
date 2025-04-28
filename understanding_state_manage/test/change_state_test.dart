@@ -17,15 +17,20 @@ void main(){
       expect(changeState.counter, 1);
     });
 
-     test("Should increment counter", (){
+     test("Should execute callback", (){
       //Arrange
+      bool callbackChanged = false;
       final _CounterChangeState changeState = _CounterChangeState();
 
       //Act
+      changeState.addListener((){
+        callbackChanged = true;
+      });
       changeState.increment();
 
       //Assert
       expect(changeState.counter, 1);
+      expect(callbackChanged, true);
     });
 
   });
